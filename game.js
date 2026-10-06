@@ -12344,10 +12344,10 @@ Error generating stack: ` + e.message + `
 ))
   , l = n()
   , u = c()
-  , d = `yukopo.github.io/brit-popity/brianity.png`
-  , f = `yukopo.github.io/brit-popity/damon.png`
-  , p = `yukopo.github.io/brit-popity/images.png`
-  , m = `yukopo.github.io/brit-popity/dgerard_yey.png`
+  , d = `/brianity.png`
+  , f = `damon.png`
+  , p = `./images.png`
+  , m = `/dgerard_yey.png`
   , h = e((e => {
     var t = Symbol.for(`react.transitional.element`);
     function n(e, n, r) {
