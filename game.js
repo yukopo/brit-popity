@@ -12344,10 +12344,10 @@ Error generating stack: ` + e.message + `
 ))
   , l = n()
   , u = c()
-  , d = `./brianity.png`
-  , f = `./damon.png`
-  , p = `./images.png`
-  , m = `./dgerard_yey.png`
+  , d = `./assets/brianity.png`
+  , f = `./assets/damon.png`
+  , p = `./assets/tomity.png`
+  , m = `./assets/dgerard_yey.png`
   , h = e((e => {
     var t = Symbol.for(`react.transitional.element`);
     function n(e, n, r) {
