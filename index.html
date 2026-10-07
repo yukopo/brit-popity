@@ -1,23 +1,134 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<link rel="icon" type="image/svg+xml" href="./assets/burnTofu.jpg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<link rel="icon" type="image/svg+xml" href="./assets/burnTofu.jpg">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<meta property="og:title" content="бритпопити">
-		<meta property="og:description" content="you know you're in trouble when people stop shitposting">
+	<meta property="og:title" content='glup'>
+	<meta property="og:description" content="you know you're in trouble when people stop shitposting">
 
-		<meta name="description" content="you know you're in trouble when people stop listening to sad music">
-		<meta name="theme-color" content="#1109b3">
+	<meta name="theme-color" content="#1109b3">
 
-		<title>brit-popity</title>
+	<title>brit-popity</title>
 
-		<script type="module" src="./game.js"></script>
-		<link rel="stylesheet" href="./index.css">
+	<script type="module" src="./game.js"></script>
+	<link rel="stylesheet" href="./index.css">
 </head>
-	<body>
-		<div id="root"></div>
-	</body>
+<body>
+	<div id="root"></div>
+	
+	<script> (function() {
+		'use strict';
+
+		console.log("=== Скрипт кастомизации Verityle запущен ===");
+
+		// =========================================================
+		// 1. ВНЕДРЕНИЕ СТИЛЕЙ И ФОНОВОЙ КАРТИНКИ
+		// =========================================================
+		const customStyles = document.createElement('style');
+		customStyles.innerHTML = `
+			/* Меняем фон всего сайта (можно вставить любой URL картинки) */
+			body, main {
+				background: no-repeat 30% url("./assets/burnTofu.jpg");
+
+				background-position: left;
+				background-attachment: fixed;
+			}
+			
+			/* Делаем игровое поле полупрозрачным, чтобы фон красиво просвечивал */
+			main > div[aria-label="Game board"] {
+				background: rgba(255, 255, 255, 0.85);
+				padding: 20px;
+				border-radius: 24px;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+			}
+
+			/* Стиль для нашего нового кастомного текстового поля */
+			.my-custom-input {
+				width: 100%;
+				max-width: 22rem;
+				padding: 12px 20px;
+				border: 2px solid #3b82f6;
+				border-radius: 16px;
+				font-size: 16px;
+				outline: none;
+				margin-top: 10px;
+				box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+			}
+		`;
+		document.head.appendChild(customStyles);
+
+		// =========================================================
+		// 2. ВНЕДРЕНИЕ НОВЫХ ОБЪЕКТОВ (Текстовое поле и Блок информации)
+		// =========================================================
+		
+		// Создаем текстовое поле (Input)
+		const customInput = document.createElement('input');
+		customInput.type = 'text';
+		customInput.placeholder = 'Введите вашу заметку или чит-код...';
+		customInput.className = 'my-custom-input';
+
+		// Создаем текстовый блок над полем
+		const infoBlock = document.createElement('div');
+		infoBlock.innerHTML = `<p style="font-weight: bold; color: #1e3a8a; margin-bottom: 5px;">🔧 Панель управления:</p>`;
+
+		// Контейнер для наших новых элементов
+		const myPanel = document.createElement('div');
+		myPanel.style.cssText = "display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 15px;";
+		myPanel.appendChild(infoBlock);
+		myPanel.appendChild(customInput);
+
+		// =========================================================
+		// 3. ИНТЕГРАЦИЯ В DOM (Размещение элементов на экране)
+		// =========================================================
+		
+		// Функция автоматического поиска оригинального игрового блока для вставки нашей панели
+		function injectElements() {
+			// Ищем панель выбора картинок на сайте
+			const targetContainer = document.querySelector('div[aria-label="Image choices"]');
+			
+			if (targetContainer && targetContainer.parentNode) {
+				// Вставляем нашу панель ПЕРЕД кнопками выбора картинок
+				targetContainer.parentNode.insertBefore(myPanel, targetContainer);
+				console.log("=== Новые элементы успешно внедрены в интерфейс ===");
+			} else {
+				// Если React еще не успел построить сайт, пробуем снова через 100мс
+				setTimeout(injectElements, 100);
+			}
+		}
+		
+		// Запускаем поиск и внедрение
+		injectElements();
+
+		// =========================================================
+		// 4. МЕХАНИКА И ЛОГИКА (Связываем новые элементы с игрой)
+		// =========================================================
+		
+		// Пишем логику: что будет происходить при вводе текста в наше новое поле
+		customInput.addEventListener('input', function(event) {
+			const text = event.target.value.toLowerCase();
+			
+			// Пример 1: Секретная команда на перекраску кнопок
+			if (text === 'paint') {
+				document.querySelectorAll('button[aria-label^="Add "]').forEach(btn => {
+					btn.style.backgroundColor = '#f472b6'; // Перекрасит кнопки в розовый
+				});
+				infoBlock.innerHTML = `<p style="color: green; font-weight: bold;">✅ Кнопки перекрашены!</p>`;
+			}
+
+			// Пример 2: Чит-код на автозаполнение текущего ряда Брайанами (клавиша "1")
+			if (text === 'brian') {
+				// Имитируем 8 нажатий на первую картинку
+				for (let i = 0; i < 8; i++) {
+					window.dispatchEvent(new KeyboardEvent('keydown', { key: '1' }));
+				}
+				customInput.value = ''; // Очищаем поле
+				infoBlock.innerHTML = `<p style="color: blue; font-weight: bold;">🤖 Автозаполнение ряда выполнено.</p>`;
+			}
+		});
+
+	})();</script>
+
+</body>
 </html>
